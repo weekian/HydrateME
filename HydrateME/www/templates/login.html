@@ -1,25 +1,17 @@
-<ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">Login</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">Close</button>
-    </div>
-  </ion-header-bar>
-  <ion-content>
-    <form ng-submit="doLogin()">
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.username">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
-        </label>
-        <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
-        </label>
-      </div>
-    </form>
-  </ion-content>
-</ion-modal-view>
+<ion-view title="Login" id="page4" style="background-color:#FFFFFF;">
+    <ion-content padding="true" scroll="false" class="has-header">
+        <form id="login-form1" class="list">
+            <ion-list id="login-list2">
+                <label class="item item-input" id="login-input1">
+                    <input type="text" placeholder="NRIC" ng-model="input.username" required>
+                </label>
+                <label class="item item-input" id="login-input2">
+                    <input type="password" placeholder="Password" ng-model="input.password" required>
+                </label>
+            </ion-list>
+            <div class="spacer" style="width: 300px; height: 18px;"></div>
+            <a id="login-button1" class="button button-positive  button-block" ng-click="login(input)">Log in</a>
+            <a ui-sref="forgotPassword" id="login-button2" class="button button-positive  button-block button-clear">Forgot password</a>
+        </form>
+    </ion-content>
+</ion-view>
