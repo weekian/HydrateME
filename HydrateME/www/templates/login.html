@@ -3,14 +3,14 @@
         <form id="login-form1" class="list">
             <ion-list id="login-list2">
                 <label class="item item-input" id="login-input1">
-                    <input type="text" placeholder="NRIC" ng-model="input.username" required>
+                    <input type="text" placeholder="NRIC" ng-model="input.username">
                 </label>
                 <label class="item item-input" id="login-input2">
-                    <input type="password" placeholder="Password" ng-model="input.password" required>
+                    <input type="password" placeholder="Password" ng-model="input.password" >
                 </label>
             </ion-list>
             <div class="spacer" style="width: 300px; height: 18px;"></div>
-            <a id="login-button1" class="button button-positive  button-block" ng-click="login(input)">Log in</a>
+            <button id="login-button1" class="button button-positive  button-block" ng-click="login(input)">Login</button>
             <a ui-sref="forgotPassword" id="login-button2" class="button button-positive  button-block button-clear">Forgot password</a>
         </form>
     </ion-content>
