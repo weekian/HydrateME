@@ -1,17 +1,17 @@
-<ion-view title="Login" id="page4" style="background-color:#FFFFFF;">
-    <ion-content padding="true" scroll="false" class="has-header">
-        <form id="login-form1" class="list">
-            <ion-list id="login-list2">
-                <label class="item item-input" id="login-input1">
-                    <input type="text" placeholder="NRIC" ng-model="input.username">
-                </label>
-                <label class="item item-input" id="login-input2">
-                    <input type="password" placeholder="Password" ng-model="input.password" >
-                </label>
-            </ion-list>
-            <div class="spacer" style="width: 300px; height: 18px;"></div>
-            <button id="login-button1" class="button button-positive  button-block" ng-click="login(input)">Login</button>
-            <a ui-sref="forgotPassword" id="login-button2" class="button button-positive  button-block button-clear">Forgot password</a>
-        </form>
-    </ion-content>
+<ion-view title="Login" hide-nav-bar="true" id="page6">
+  <ion-content padding="true" class="manual-ios-statusbar-padding">
+    <form id="login-form1" class="list">
+      <ion-list id="login-list1">
+        <label class="item item-input" id="login-input1">
+          <input type="text" placeholder="NRIC">
+        </label>
+        <label class="item item-input" id="login-input2">
+          <input type="password" placeholder="Password">
+        </label>
+      </ion-list>
+      <div class="spacer" style="width: 300px; height: 18px;"></div>
+      <a ui-sref="tabsController.middleTab" id="login-button1" class="button button-positive  button-block">Log in</a>
+      <a ui-sref="forgot" id="login-button2" class="button button-positive  button-block button-clear">Forgot Password</a>
+    </form>
+  </ion-content>
 </ion-view>

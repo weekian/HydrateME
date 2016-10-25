@@ -10,50 +10,46 @@ angular.module('app.routes', [])
 
 
 
-  .state('menu.home', {
-    url: '/home',
+      .state('tabsController.firstTab', {
+    url: '/firstTab',
     views: {
-      'side-menu': {
-        templateUrl: 'templates/home.html',
-        controller: 'homeCtrl'
+      'tab1': {
+        templateUrl: 'templates/firstTab.html',
+        controller: 'firstTabCtrl'
       }
     }
   })
 
-  .state('menu.cart', {
-    url: '/cart',
+  .state('tabsController.middleTab', {
+    url: '/middleTab',
     views: {
-      'side-menu': {
-        templateUrl: 'templates/cart.html',
-        controller: 'cartCtrl'
+      'tab2': {
+        templateUrl: 'templates/middleTab.html',
+        controller: 'middleTabCtrl'
       }
     }
   })
 
-  .state('menu.cloud', {
-    url: '/cloud',
+  .state('tabsController.rightTab', {
+    url: '/rightTab',
     views: {
-      'side-menu': {
-        templateUrl: 'templates/cloud.html',
-        controller: 'cloudCtrl'
+      'tab3': {
+        templateUrl: 'templates/rightTab.html',
+        controller: 'rightTabCtrl'
       }
     }
   })
 
-  .state('menu.settings', {
-    url: '/settings',
-    views: {
-      'side-menu': {
-        templateUrl: 'templates/settings.html',
-        controller: 'settingsCtrl'
-      }
-    }
+  .state('tabsController', {
+    url: '/tab',
+    templateUrl: 'templates/tabsController.html',
+    abstract:true
   })
 
-  .state('menu', {
-    url: '/sideMenu',
-    templateUrl: 'templates/menu.html',
-    controller: 'menuCtrl'
+  .state('landing', {
+    url: '/landing',
+    templateUrl: 'templates/landing.html',
+    controller: 'landingCtrl'
   })
 
   .state('login', {
@@ -62,10 +58,10 @@ angular.module('app.routes', [])
     controller: 'loginCtrl'
   })
 
-  .state('forgotPassword', {
-    url: '/forgotPassword',
-    templateUrl: 'templates/forgotPassword.html',
-    controller: 'forgotPasswordCtrl'
+  .state('forgot', {
+    url: '/forgot',
+    templateUrl: 'templates/forgot.html',
+    controller: 'forgotCtrl'
   })
 
 $urlRouterProvider.otherwise('/login')

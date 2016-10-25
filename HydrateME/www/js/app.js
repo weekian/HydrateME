@@ -9,6 +9,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 
 .config(function($ionicConfigProvider){
   
+    $ionicConfigProvider.backButton.text('').previousTitleText(false);
+  
 })
 
 .run(function($ionicPlatform) {

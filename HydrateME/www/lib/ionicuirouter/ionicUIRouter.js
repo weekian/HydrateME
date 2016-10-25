@@ -50,7 +50,7 @@ function($provide, $stateProvider) {
   $stateProvider.__state = $stateProvider.state;
 
     $stateProvider.state = function(statename, data){
-
+        
         if (data.views){
 
             var numKeys = 0;

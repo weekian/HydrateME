@@ -7,6 +7,3 @@ angular.module('app.services', [])
 .service('BlankService', [function(){
 
 }]);
-/*
-http://mcgivery.com/ionic-using-factories-and-web-services-for-dynamic-data/
-*/
