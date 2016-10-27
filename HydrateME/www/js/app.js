@@ -23,6 +23,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     });
 })
 
+.config(function($ionicConfigProvider)
+{
+  // Remove back button text completely
+  $ionicConfigProvider.backButton.previousTitleText(false).text('');
+})
+
 .config(function($stateProvider, $urlRouterProvider) {
 
 // Ionic uses AngularUI Router which uses the concept of states
