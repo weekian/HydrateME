@@ -22,6 +22,5 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard"
   ],
-  "cordovaPlatforms": [],
-  "gulpStartupTasks":["sass", "watch"]
+  "cordovaPlatforms": []
 }
