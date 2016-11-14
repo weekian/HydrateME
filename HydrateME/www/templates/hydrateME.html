@@ -1,3 +1,55 @@
-<ion-view title="HydrateME" id="page7">
-  <ion-content padding="true" scroll="false" class="has-header"></ion-content>
+<ion-view title="HydrateME" hide-nav-bar="true" id="page7">
+  <ion-content padding="true" scroll="false">
+      <section class="login-container">
+        <div class="col header text-center">
+          <img src="img/raindropWithTitle.png" class="logo">
+        </div>
+        <div class="bottom-content row">
+          <div class="col col-bottom">
+            <button id="landing-button1" class="button button-dark  button-block" ng-click="displayModal(1)">Login</button>
+            <button id="landing-button2" class="button button-dark  button-block" ng-click="displayModal(2)">Forgot Password</button>
+          </div>
+        </div>
+  </ion-content>
 </ion-view>
+<script id="templates/login.html" type="text/ng-template">
+  <ion-modal-view>
+      <ion-header-bar class="bar-dark">
+        <h1 class="title">Login</h1>
+        <button class="button button-clear button-primary" ng-click="closeModal(1)">Cancel</button>
+      </ion-header-bar>
+      <ion-content padding="true" scroll="false" class="has-header">
+        <form id="login-form1" class="list">
+          <ion-list id="login-list1">
+            <label class="item item-input" id="login-input1">
+              <input type="text" placeholder="NRIC" ng-model="login.nric">
+            </label>
+            <label class="item item-input" id="login-input2">
+              <input type="password" placeholder="Password" ng-model="login.password">
+            </label>
+          </ion-list>
+          <div class="spacer" style="width: 300px; height: 22px;"></div>
+          <button id="login-button1" class="button button-dark  button-block" ng-click="login(login)">Login</button>
+          <a id="login-button2" class="button button-positive  button-block button-clear" ng-click="displayForgot()">Forgot Password?</a>
+        </form>
+      </ion-content>
+  </ion-modal-view>
+</script>
+<script id="templates/forgot.html" type="text/ng-template">
+  <ion-modal-view>
+      <ion-header-bar class="bar-dark">
+        <h1 class="title">Forgot</h1>
+        <button class="button button-clear button-primary" ng-click="closeModal(2)">Cancel</button>
+      </ion-header-bar>
+      <ion-content padding="true" scroll="false" class="has-header">
+        <form id="resetPassword-form2" class="list">
+          <ion-list id="resetPassword-list2">
+            <label class="item item-input" id="resetPassword-input5">
+              <input type="text" placeholder="NRIC" ng-model="forgot.nric">
+            </label>
+          </ion-list>
+          <button id="resetPassword-button3" class="button button-dark  button-block">Submit</button>
+        </form>
+      </ion-content>
+  </ion-modal-view>
+</script>

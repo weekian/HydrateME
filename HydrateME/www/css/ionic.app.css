@@ -15,6 +15,42 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
+.login-container {
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  height: 100%;
+  background-size: auto 100%; }
+
+.logo {
+  padding-top: 10%;
+  height: auto !important;
+  display: block;
+  width: 100% !important;
+  max-width: 500px;
+  margin: auto; }
+
+.welcome-view .top-content {
+  height: 66%; }
+
+.welcome-view .bottom-content {
+  height: 34%; }
+
+*::-webkit-input-placeholder {
+  color: black !important;
+  opacity: 0.5; }
+
+*:-moz-placeholder {
+  color: black !important;
+  opacity: 0.5; }
+
+*:-ms-input-placeholder {
+  /* IE10+ */
+  color: black !important;
+  opacity: 0.5; }
+
+.popup-body {
+  text-align: center; }
+
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/

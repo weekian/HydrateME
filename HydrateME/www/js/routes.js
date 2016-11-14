@@ -46,18 +46,6 @@ angular.module('app.routes', [])
     abstract:true
   })
 
-  .state('login', {
-    url: '/page5',
-    templateUrl: 'templates/login.html',
-    controller: 'loginCtrl'
-  })
-
-  .state('resetPassword', {
-    url: '/forgot',
-    templateUrl: 'templates/resetPassword.html',
-    controller: 'resetPasswordCtrl'
-  })
-
   .state('hydrateME', {
     url: '/landing',
     templateUrl: 'templates/hydrateME.html',

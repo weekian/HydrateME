@@ -17,6 +17,45 @@ $dark:                            #444 !default;
 $dark:                            #1D4E89;
 $link-color:                        $dark;
 $button-dark-border:              #1D4E89;
+
+.login-container {
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  height: 100%;
+  background-size: auto 100%;
+}
+.logo {
+    padding-top:10%;
+    //width:100%;
+    //max-height: 100%;
+    height: auto !important;
+    display:block;
+    width: 100% !important;
+    max-width: 500px;
+    margin:auto;
+}
+.welcome-view .top-content {
+  height: 66%;
+}
+.welcome-view .bottom-content {
+  height: 34%;
+}
+
+*::-webkit-input-placeholder {
+  color: black !important;
+  opacity:0.5;
+}
+*:-moz-placeholder {
+  color: black !important;
+  opacity:0.5;
+}
+*:-ms-input-placeholder { /* IE10+ */
+  color: black !important;
+  opacity:0.5;
+}
+.popup-body {
+    text-align: center;
+}
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
