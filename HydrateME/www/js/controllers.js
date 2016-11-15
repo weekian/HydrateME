@@ -119,7 +119,7 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoadi
             },
             function errorCallback(response) {
                 $ionicLoading.hide();
-                alertPopup("Invalid Username or Password");
+                alertPopup(response.data.message);
             });
         } else {
             if ((!login.nric && !login.password) || (login.nric.trim().length === 0 && login.password.length ===0)) {
