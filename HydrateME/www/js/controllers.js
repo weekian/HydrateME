@@ -12,7 +12,13 @@ function ($scope, $stateParams) {
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams) {
-
+    $scope.dateHeader = moment().format('Do MMM YYYY').toString();
+    $scope.$on('$ionicView.enter', function(){
+        var currentDate = moment().format('Do MMM YYYY').toString();
+        if ($scope.dateHeader !== currentDate) {
+            $scope.dateHeader = currentDate;
+        }
+    });
 
 }])
 

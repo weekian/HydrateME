@@ -58,7 +58,7 @@ angular.module('app.routes', [])
     controller: 'updatePasswordCtrl'
   })
 
-$urlRouterProvider.otherwise('/landing')
+$urlRouterProvider.otherwise('/tabs/middle')
 
 
 

@@ -17,6 +17,7 @@ $dark:                            #444 !default;
 $dark:                            #1D4E89;
 $link-color:                        $dark;
 $button-dark-border:              #1D4E89;
+$height : height;
 
 .login-container {
     display: -webkit-flex;
@@ -67,7 +68,20 @@ $button-dark-border:              #1D4E89;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
-
+}
+.circleBorder {
+    height:250px;
+    width:250px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 100%;
+    border:10px solid #EDEDED;
+}
+.top{
+    height:20%;
+}
+.bottom {
+    height:20%;
 }
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
