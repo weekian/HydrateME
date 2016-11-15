@@ -51,6 +51,12 @@ $dark:                            #444 !default;
 .popup-body {
   text-align: center; }
 
+.spinner svg {
+  width: 28px;
+  height: 28px;
+  stroke: #A0CED9;
+  fill: #A0CED9; }
+
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/

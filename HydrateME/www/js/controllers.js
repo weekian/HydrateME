@@ -40,10 +40,10 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('hydrateMECtrl', ['$scope', '$stateParams', '$ionicModal', '$ionicPopup', '$http', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('hydrateMECtrl', ['$scope', '$stateParams', '$ionicModal', '$ionicPopup', '$http', '$state','$ionicLoading', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state) {
+function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoading) {
     $scope.login = {
         nric:"",
         password:"",
@@ -94,6 +94,9 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state) {
     });
     $scope.login = function(login) {
         if (login.nric && login.password && login.nric.trim().length > 0) {
+            $ionicLoading.show({
+              template: '<p>Logging In...</p><ion-spinner icon="bubbles"></ion-spinner>'
+            });
             $http({
                 url: 'https://iot-2016is439.rhcloud.com/api/user/account/login',
                 method: 'POST',
@@ -102,14 +105,22 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state) {
                 },
                 data: {
                     username:login.nric,
-                    password:login.password
+                    password:login.password,
+                    type:"mobile"
                 }
             }).then(function successCallback(response) {
-                    $state.go(today);
-                },
-                function errorCallback(response) {
-                    alertPopup("Invalid Username or Password");
-                });
+                localStorage.setItem("login_status", "true");
+                localStorage.setItem("usertype",response.data.userType);
+                localStorage.setItem("name", response.data.name);
+                localStorage.setItem("token", response.data.token);
+                $scope.loginModal.hide();
+                $ionicLoading.hide();
+                $state.go('tabsController.today');
+            },
+            function errorCallback(response) {
+                $ionicLoading.hide();
+                alertPopup("Invalid Username or Password");
+            });
         } else {
             if ((!login.nric && !login.password) || (login.nric.trim().length === 0 && login.password.length ===0)) {
                 alertPopup("Please fill in NRIC and Password");

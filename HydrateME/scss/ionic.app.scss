@@ -56,6 +56,12 @@ $button-dark-border:              #1D4E89;
 .popup-body {
     text-align: center;
 }
+.spinner svg {
+  width: 28px;
+  height: 28px;
+  stroke: #A0CED9;
+  fill: #A0CED9;
+}
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
