@@ -57,6 +57,12 @@ $dark:                            #444 !default;
   stroke: #A0CED9;
   fill: #A0CED9; }
 
+.pane {
+  background: url("../img/backgroundImage.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover; }
+
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/

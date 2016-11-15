@@ -19,10 +19,10 @@ $link-color:                        $dark;
 $button-dark-border:              #1D4E89;
 
 .login-container {
-  display: -webkit-flex;
-  -webkit-flex-direction: column;
-  height: 100%;
-  background-size: auto 100%;
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    height: 100%;
+    background-size: auto 100%;
 }
 .logo {
     padding-top:10%;
@@ -35,32 +35,39 @@ $button-dark-border:              #1D4E89;
     margin:auto;
 }
 .welcome-view .top-content {
-  height: 66%;
+    height: 66%;
 }
 .welcome-view .bottom-content {
-  height: 34%;
+    height: 34%;
 }
 
 *::-webkit-input-placeholder {
-  color: black !important;
-  opacity:0.5;
+    color: black !important;
+    opacity:0.5;
 }
 *:-moz-placeholder {
-  color: black !important;
-  opacity:0.5;
+    color: black !important;
+    opacity:0.5;
 }
 *:-ms-input-placeholder { /* IE10+ */
-  color: black !important;
-  opacity:0.5;
+    color: black !important;
+    opacity:0.5;
 }
 .popup-body {
     text-align: center;
 }
 .spinner svg {
-  width: 28px;
-  height: 28px;
-  stroke: #A0CED9;
-  fill: #A0CED9;
+    width: 28px;
+    height: 28px;
+    stroke: #A0CED9;
+    fill: #A0CED9;
+}
+.pane{
+    background:url('../img/backgroundImage.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+
 }
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
