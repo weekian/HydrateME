@@ -129,7 +129,6 @@ function ($scope, $stateParams,$timeout) {
     var fill = function(){
         $timeout(function(){
             if (current != 100 && current <= Math.ceil($scope.latestAmt*1.0/$scope.recommendedAmt*100)) {
-                console.log("inside");
                 $scope.fillStyle = levels[++current];
                 fill();
             }
@@ -138,11 +137,31 @@ function ($scope, $stateParams,$timeout) {
     $timeout(fill(), 1500);
 }])
 
-.controller('profileCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('profileCtrl', ['$scope', '$stateParams', '$state','$ionicLoading', '$ionicHistory', '$window','$timeout',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+function ($scope, $stateParams, $state,$ionicLoading, $ionicHistory, $window,$timeout) {
+    $scope.usertype = localStorage.getItem('usertype');
+    $scope.logout = function(){
+        $ionicLoading.show({
+          template: '<p>Logging Out...</p><ion-spinner icon="bubbles"></ion-spinner>'
+        });
+        localStorage.setItem('login_state', 'false');
+        localStorage.clear();
+        $window.localStorage.clear();
+        $ionicHistory.clearCache();
+        $ionicHistory.clearHistory();
+        $ionicHistory.nextViewOptions({
+            disableBack: true,
+            historyRoot: true
+        });
 
+        $timeout(function(){
+            $ionicLoading.hide();
+            $state.go('hydrateME');
+        }, 1000);
+        
+    }
 
 }])
 
@@ -214,10 +233,7 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoadi
             $scope.forgotModal.hide();
         }
     };
-    // Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-        $scope.modal.remove();
-    });
+
     $scope.login = function(login) {
         if (login.nric && login.password && login.nric.trim().length > 0) {
             $ionicLoading.show({

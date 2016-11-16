@@ -15,7 +15,6 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 
 .filter('litre', function(){
     return function(value) {
-        console.log(value);
         if (value >= 1000) {
             return value/1000.0 + " litres";
         } else {
