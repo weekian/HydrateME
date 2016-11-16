@@ -119,7 +119,6 @@ function ($scope, $stateParams,$timeout) {
     $scope.recommendedAmt = parseInt(localStorage.getItem('recommendedAmt'));
     $scope.latestAmt = parseInt(localStorage.getItem('latestAmt'));
     $scope.dateHeader = moment().format('Do MMM YYYY').toString();
-    //'background':'-webkit-linear-gradient(white ' + $scope.empty +'%, #9DC3E6 ' + $scope.filled + '%)'
     $scope.fillStyle = levels[current];
     $scope.$on('$ionicView.enter', function(){
         var currentDate = moment().format('Do MMM YYYY').toString();
@@ -129,14 +128,14 @@ function ($scope, $stateParams,$timeout) {
     });
     var fill = function(){
         $timeout(function(){
-            if (current != 100) {
+            if (current != 100 && current <= Math.ceil($scope.latestAmt*1.0/$scope.recommendedAmt*100)) {
+                console.log("inside");
                 $scope.fillStyle = levels[++current];
                 fill();
             }
-            //console.log(current);
-        },50);
+        },15);
     }
-    fill();
+    $timeout(fill(), 1500);
 }])
 
 .controller('profileCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
@@ -241,7 +240,7 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoadi
                 localStorage.setItem("name", response.data.name);
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("recommendedAmt", response.data.recommendedAmt || 4000);
-                localStorage.setItem("latestAmt", response.data.latestAmt || 2500);
+                localStorage.setItem("latestAmt", response.data.latestAmt || 3500);
                 $scope.loginModal.hide();
                 $ionicLoading.hide();
                 $state.go('tabsController.today');
