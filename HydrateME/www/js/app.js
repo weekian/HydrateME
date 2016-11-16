@@ -13,6 +13,17 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 
 })
 
+.filter('litre', function(){
+    return function(value) {
+        console.log(value);
+        if (value >= 1000) {
+            return value/1000.0 + " litres";
+        } else {
+            return value + " millilitres";
+        }
+    }
+})
+
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

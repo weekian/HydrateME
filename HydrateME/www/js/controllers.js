@@ -116,10 +116,11 @@ function ($scope, $stateParams,$timeout) {
             {'background':'-webkit-linear-gradient(white 0%, #9DC3E6 0%)'}
     ];
     var current = 0;
+    $scope.recommendedAmt = parseInt(localStorage.getItem('recommendedAmt'));
+    $scope.latestAmt = parseInt(localStorage.getItem('latestAmt'));
     $scope.dateHeader = moment().format('Do MMM YYYY').toString();
     //'background':'-webkit-linear-gradient(white ' + $scope.empty +'%, #9DC3E6 ' + $scope.filled + '%)'
     $scope.fillStyle = levels[current];
-
     $scope.$on('$ionicView.enter', function(){
         var currentDate = moment().format('Do MMM YYYY').toString();
         if ($scope.dateHeader !== currentDate) {
@@ -132,7 +133,7 @@ function ($scope, $stateParams,$timeout) {
                 $scope.fillStyle = levels[++current];
                 fill();
             }
-                        console.log(current);
+            //console.log(current);
         },50);
     }
     fill();
@@ -167,9 +168,9 @@ function ($scope, $stateParams) {
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoading) {
     //Existing users who closed the app but remain logged in
-    if (localStorage.getItem('login_status')) {
+    /*if (localStorage.getItem('login_status')) {
         $state.go('tabsController.today');
-    }
+    }*/
     $scope.login = {
         nric:"",
         password:"",
@@ -236,9 +237,11 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoadi
                 }
             }).then(function successCallback(response) {
                 localStorage.setItem("login_status", "true");
-                localStorage.setItem("usertype",response.data.userType);
+                localStorage.setItem("usertype",response.data.usertype);
                 localStorage.setItem("name", response.data.name);
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("recommendedAmt", response.data.recommendedAmt || 4000);
+                localStorage.setItem("latestAmt", response.data.latestAmt || 2500);
                 $scope.loginModal.hide();
                 $ionicLoading.hide();
                 $state.go('tabsController.today');
@@ -284,24 +287,3 @@ function ($scope, $stateParams) {
 
 
 }])
-
-
-
-/*
-
-
-{'background':'linear-gradient(white 100%,#9DC3E6 0%)'},
-{'background':'linear-gradient(white 99%,#9DC3E6 1%)'},
-{'background':'linear-gradient(white 98%,#9DC3E6 1%)'},
-{'background':'linear-gradient(white 97%,#9DC3E6 1%)'},
-{'background':'linear-gradient(white 96%,#9DC3E6 1%)'},
-{'background':'linear-gradient(white 95%,#9DC3E6 1%)'},
-{'background':'linear-gradient(white 90%,#9DC3E6 1%)'},
-{'background':'linear-gradient(white 50%,#9DC3E6 0%)'},
-{'background':'linear-gradient(white 47%,#9DC3E6 0%)'},
-{'background':'linear-gradient(white 47%,#9DC3E6 0%)'},
-{'background':'linear-gradient(white 44%,#9DC3E6 0%)'},
-{'background':'linear-gradient(white 40%,#9DC3E6 0%)'},
-{'background':'linear-gradient(white 30%,#9DC3E6 0%)'},
-{'background':'linear-gradient(white 20%,#9DC3E6 0%)'}
-*/
