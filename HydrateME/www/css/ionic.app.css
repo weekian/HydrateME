@@ -58,6 +58,10 @@ $dark:                            #444 !default;
   fill: #A0CED9; }
 
 .pane {
+  /*background:url('img/backgroundImage.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;*/
   background: url("../img/backgroundImage.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -78,18 +82,37 @@ $dark:                            #444 !default;
 .circleBorderImage {
   display: block;
   margin: auto;
-  height: 75%;
+  height: 70%;
   padding-top: 5%;
-  padding-bottom: 3%; }
+  padding-bottom: 5%; }
 
 .tab-item {
   padding-top: 0.5px; }
 
 .todayTop {
-  height: 20%; }
+  height: 20%;
+  position: relative; }
+
+.todayTop span {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  bottom: 0;
+  padding-bottom: 25px;
+  font-weight: bolder;
+  font-size: 1.5em; }
 
 .todayBottom {
-  height: 20%; }
+  height: 20%;
+  position: relative; }
+
+.todayBottom span {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  padding-top: 25px;
+  font-weight: bold;
+  font-size: 1.25em; }
 
 /*!
   Ionicons, v2.0.1
@@ -4334,7 +4357,7 @@ a.subdued {
     color: #fff;
     text-decoration: none; }
   .bar-dark .button.active, .bar-dark .button.activated {
-    background-color: #262626; }
+    background-color: #163b67; }
   .bar-dark .button.button-clear {
     border-color: transparent;
     background: none;
@@ -4547,6 +4570,7 @@ a.subdued {
   background-color: white;
   background-image: none;
   border: none;
+  border-bottom: 1px solid #ddd;
   padding-top: 2px; }
 
 .tabs-striped .tab-item.tab-item-active, .tabs-striped .tab-item.active, .tabs-striped .tab-item.activated {
@@ -5967,16 +5991,16 @@ ion-tabs.tabs-color-active-dark .tab-item {
   .item-complex.activated .item-content.item-dark,
   .item .item-content.active.item-dark,
   .item .item-content.activated.item-dark {
-    border-color: #000;
-    background-color: #262626; }
+    border-color: #163b67;
+    background-color: #163b67; }
     .item.active.item-dark.item-complex > .item-content,
     .item.activated.item-dark.item-complex > .item-content,
     .item-complex.active .item-content.item-dark.item-complex > .item-content,
     .item-complex.activated .item-content.item-dark.item-complex > .item-content,
     .item .item-content.active.item-dark.item-complex > .item-content,
     .item .item-content.activated.item-dark.item-complex > .item-content {
-      border-color: #000;
-      background-color: #262626; }
+      border-color: #163b67;
+      background-color: #163b67; }
 
 .item,
 .item h1,
@@ -6156,11 +6180,11 @@ a.item-content {
   background-color: #1D4E89;
   color: #fff; }
   .item-complex.item-dark > .item-content.active, .item-complex.item-dark > .item-content:active {
-    border-color: #000;
-    background-color: #262626; }
+    border-color: #163b67;
+    background-color: #163b67; }
     .item-complex.item-dark > .item-content.active.item-complex > .item-content, .item-complex.item-dark > .item-content:active.item-complex > .item-content {
-      border-color: #000;
-      background-color: #262626; }
+      border-color: #163b67;
+      background-color: #163b67; }
 
 /**
  * Item Icons
@@ -8852,7 +8876,7 @@ progress {
       color: #fff;
       text-decoration: none; }
     .button.button-dark.active, .button.button-dark.activated {
-      background-color: #262626; }
+      background-color: #163b67; }
     .button.button-dark.button-clear {
       border-color: transparent;
       background: none;

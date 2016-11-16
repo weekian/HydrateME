@@ -10,15 +10,15 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 .config(function($ionicConfigProvider){
     $ionicConfigProvider.backButton.text('').previousTitleText(false);
     $ionicConfigProvider.tabs.position("bottom");
-
+    $ionicConfigProvider.navBar.alignTitle('center');
 })
 
 .filter('litre', function(){
     return function(value) {
         if (value >= 1000) {
-            return value/1000.0 + " litres";
+            return Math.round((value/1000.0) * 100) / 100 + " litres";
         } else {
-            return value + " millilitres";
+            return value + "ml";
         }
     }
 })
@@ -35,5 +35,6 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    //ionic.Platform.isFullScreen = true;
   });
 })

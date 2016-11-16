@@ -17,7 +17,8 @@ $dark:                            #444 !default;
 $dark:                            #1D4E89;
 $link-color:                        $dark;
 $button-dark-border:              #1D4E89;
-$height : height;
+$button-dark-active-bg:          darken($dark, 8%) !default;
+$button-dark-active-border:      darken($dark, 8%) !default;
 
 .login-container {
     display: -webkit-flex;
@@ -62,7 +63,11 @@ $height : height;
     fill: #A0CED9;
 }
 .pane{
-    background:url('../img/backgroundImage.jpg') no-repeat center center fixed;
+    /*background:url('img/backgroundImage.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;*/
+    background: url("../img/backgroundImage.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -82,21 +87,41 @@ $height : height;
 .circleBorderImage{
     display:block;
     margin:auto;
-    height:75%;
+    height:70%;
     padding-top: 5%;
-    padding-bottom:3%;
+    padding-bottom:5%;
 }
 .tab-item{
     padding-top:0.5px;
 }
 .todayTop{
     height:20%;
+    position:relative;
+
+}
+.todayTop span{
+    position: absolute;
+    text-align: center;
+    width:100%;
+    bottom: 0;
+    padding-bottom: 25px;
+    font-weight: bolder;
+    font-size: 1.5em;
 }
 .todayBottom {
     height:20%;
+    position:relative;
+}
+.todayBottom span{
+    position: absolute;
+    text-align: center;
+    width:100%;
+    padding-top: 25px;
+    font-weight: bold;
+    font-size: 1.25em;
 }
 .profile{
-    
+
 }
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
