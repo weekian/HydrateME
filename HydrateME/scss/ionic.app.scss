@@ -76,11 +76,25 @@ $height : height;
     margin-right: auto;
     border-radius: 100%;
     border:10px solid #EDEDED;
+    z-index: 1;
+    overflow:hidden;
+    text-align: center;
+    font-size: 2em;
 }
-.top{
+.circleBorderImage{
+    display:block;
+    margin:auto;
+    height:75%;
+    padding-top: 5%;
+    padding-bottom:5%;
+}
+.tab-item{
+    padding-top:0.5px;
+}
+.todayTop{
     height:20%;
 }
-.bottom {
+.todayBottom {
     height:20%;
 }
 // The path for our ionicons font files, relative to the built CSS in www/css
