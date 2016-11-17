@@ -231,7 +231,7 @@ function ($scope, $stateParams,$timeout,$q,$http) {
 function ($scope, $stateParams, $state,$ionicLoading,$timeout,$ionicHistory,$http) {
     $scope.usertype = localStorage.getItem('usertype');
     $scope.isParent = ($scope.usertype === 'parent');
-    $scope.defaultVolume = localStorage.getItem('defaultVolume');
+    $scope.defaultVolume = parseInt(localStorage.getItem('defaultVolume'));
     $scope.updateVolune = function(){
         //Not required for purpose of POC
     }
@@ -332,7 +332,7 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoadi
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("recommendedAmt", response.data.recommendedAmt || 1750);
                 localStorage.setItem("latestAmt", response.data.latestAmt || 1577);
-                localStorage.setItem("lastAmt", JSON.stringify(response.data.lastAmt) || null);// || {dateTimeStamp:1479369600000, amt:400}));
+                localStorage.setItem("lastAmt", JSON.stringify(response.data.lastAmt/*) || null);*/ || {dateTimeStamp:1479369600000, amt:400}));
                 localStorage.setItem("defaultVolume", response.data.defaultVolume || 0);
                 localStorage.setItem("lastUpdate", moment().valueOf());
                 $scope.loginModal.hide();
