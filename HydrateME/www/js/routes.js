@@ -52,12 +52,6 @@ angular.module('app.routes', [])
     controller: 'hydrateMECtrl'
   })
 
-  .state('updatePassword', {
-    url: '/update',
-    templateUrl: 'templates/updatePassword.html',
-    controller: 'updatePasswordCtrl'
-  })
-
 $urlRouterProvider.otherwise('/landing')
 
 
