@@ -1,18 +1,24 @@
 <ion-view title="{{dateHeader}}" id="page3">
     <ion-content padding="true" class="has-header" scroll="false">
     <div class="todayTop">
-        <span>Recommended Intake: <strong>{{recommendedAmt | litre}}</strong></span>
+        <div class="todayTopSpan">
+            <p>
+                Recommended Intake in school:
+            </p>
+            <p class="todayTopSpanNumber">{{recommendedAmt | litre}}</p>
+        </div>
     </div>
     <div class="circleBorder" ng-style="fillStyle" ng-click="refill()">
         <img class="circleBorderImage" src="img/todayDroplet.png">
-        {{latestAmt | litre}}
+        <p class="identifier">{{userRef}} filled</p>
+        <p>{{latestAmt | litre}}<p>
         <!--<strong>{{litresDrank}}</strong> liters-
             <div class="circleBorderTop"></div>
             Hello
             <div class="circleBorderBottom"></div>-->
     </div>
     <div class="todayBottom">
-        <span>Last topped up {{lastAmt.amt | litre}} {{period}}<span>
+        <span ng-hide="lastAmt === null">Last topped up {{lastAmt.amt | litre}} {{period}}<span>
     <div>
     </ion-content>
 </ion-view>

@@ -1,19 +1,23 @@
 <ion-view title="Settings" id="page4">
     <ion-content padding="true" scroll="false" class="has-header">
-        <div class="list" ng-show="{{isParent}}">
-            <span>Send your kids off to school with a full bottle? Input the volume here to for more accurate tracking<span>
-            <label class="item item-input">
-                <input type="number" placeholder="Starting Value">
-            </label>
+        <div ng-show="{{isParent}}">
+            <div id="history-markdown7" style="text-align:center;" class="show-list-numbers-and-dots">
+                <p style="color:#000000;">Sending your kids off to school with a full bottle? Enter the volume (in ml) here now for more accurate tracking!</p>
+            </div>
+            <div>
+                <label class="item item-input" id="history-input12">
+                    <input type="number" placeholder="Volume" ng-model="defaultVolume" ng-value="defaultVolume" style="text-align:center; font-size:1.25em">
+                </label>
+                <button id="history-button6" class="button button-dark  button-block">Submit</button>
+            </div>
         </div>
-
-        <div class="profile">
-            <button class="button button-block button-dark" ng-click="">
-                Change Password
-            </button>
-        </div>
-        <button class="button button-block button-dark" ng-click="logout()">
+    </ion-content>
+    <div class="profile">
+        <button class="button button-block button-assertive" ng-click="">
+            Change Password
+        </button>
+        <button class="button button-block button-assertive" ng-click="logout()">
             Logout
         </button>
-    </ion-content>
+    </div>
 </ion-view>

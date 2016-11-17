@@ -15,10 +15,14 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 
 .filter('litre', function(){
     return function(value) {
-        if (value >= 1000) {
-            return Math.round((value/1000.0) * 100) / 100 + " litres";
+        if (value !== null) {
+            if (value >= 1000) {
+                return Math.round((value/1000.0) * 100) / 100 + " litres";
+            } else {
+                return value + "ml";
+            }
         } else {
-            return value + "ml";
+            return "";
         }
     }
 })

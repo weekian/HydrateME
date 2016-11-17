@@ -20,6 +20,10 @@ $button-dark-border:              #1D4E89;
 $button-dark-active-bg:          darken($dark, 8%) !default;
 $button-dark-active-border:      darken($dark, 8%) !default;
 
+$assertive:                       #003249;
+$button-assertive-active-bg:      darken($assertive, 8%) !default;
+$button-assertive-active-border:  darken($assertive, 8%) !default;
+
 .login-container {
     display: -webkit-flex;
     -webkit-flex-direction: column;
@@ -87,19 +91,23 @@ $button-dark-active-border:      darken($dark, 8%) !default;
 .circleBorderImage{
     display:block;
     margin:auto;
-    height:70%;
+    height:60%;
     padding-top: 5%;
     padding-bottom:5%;
+}
+.identifier{
+    font-size:0.45em;
+    padding-top:0px;
 }
 .tab-item{
     padding-top:0.5px;
 }
 .todayTop{
-    height:20%;
+    height:25%;
     position:relative;
 
 }
-.todayTop span{
+.todayTopSpan{
     position: absolute;
     text-align: center;
     width:100%;
@@ -107,6 +115,10 @@ $button-dark-active-border:      darken($dark, 8%) !default;
     padding-bottom: 25px;
     font-weight: bolder;
     font-size: 1.5em;
+}
+.todayTopSpanNumber{
+    font-size: 1.6em;
+
 }
 .todayBottom {
     height:20%;
@@ -121,7 +133,13 @@ $button-dark-active-border:      darken($dark, 8%) !default;
     font-size: 1.25em;
 }
 .profile{
-
+    padding-left: 10px;
+    padding-right: 10px;
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    height:  120px;
+    text-align:center;
 }
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
