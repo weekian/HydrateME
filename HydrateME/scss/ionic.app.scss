@@ -24,6 +24,12 @@ $assertive:                       #003249;
 $button-assertive-active-bg:      darken($assertive, 8%) !default;
 $button-assertive-active-border:  darken($assertive, 8%) !default;
 
+$energized:                            #0099CC  ;
+$link-color:                        $dark;
+$button-energized-border:              #0099CC ;
+$button-energized-active-bg:          darken($energized, 8%) !default;
+$button-energized-active-border:      darken($energized, 8%) !default;
+
 .login-container {
     display: -webkit-flex;
     -webkit-flex-direction: column;

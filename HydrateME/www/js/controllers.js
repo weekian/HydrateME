@@ -4,8 +4,8 @@ angular.module('app.controllers', [])
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams) {
-
-
+    $scope.date = moment().format('Do MMM YYYY').toString();
+    
 }])
 
 .controller('todayCtrl', ['$scope', '$stateParams','$timeout','$q','$http', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
