@@ -1,7 +1,31 @@
 <ion-view title="Analysis" id="page2">
-    <ion-content padding="false" class="has-header" scroll="false">
-        <button class="button button-full button-energized" style="margin-top:0px;" ng-click="openDatePicker()">
+    <ion-header-bar align-title="Center" class="bar-subheader bar-energized">
+        <button class="button button-full button-energized" style="margin-top:0px; margin-bottom:0px;font-size:1.5em;" ng-click="openDatePicker()">
           {{date}}
         </button>
+    </ion-header-bar>
+    <ion-content padding="false" class="has-header has-subheader" scroll="true">
+
+        <ion-list>
+            <ion-item class="item-stable">
+                <span style="font-size:1.2em;font-weight:bold;">Total {{total | litre}}<span>
+            </ion-item>
+            <div ng-repeat="group in groups">
+            <ion-item class="item-stable"
+                   ng-click="toggleGroup(group)"
+                   ng-class="{active: isGroupShown(group)}">
+                <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
+                &nbsp;
+                {{group.time | hour}}
+                <span style="float:right">{{group.items.length}} Record</span>
+            </ion-item>
+            <ion-item class="item-accordion"
+                   ng-repeat="item in group.items"
+                   ng-show="isGroupShown(group)" style="text-align:center">
+                <span style="float:left">&nbsp;Time: {{item.dateTimeStamp | time}}<span>
+                <span style="float:right">&nbsp;&nbsp;|&nbsp;&nbsp;Volume {{item.amt | litre}}</span>
+            </ion-item>
+            </div>
+        </ion-list>
     </ion-content>
 </ion-view>

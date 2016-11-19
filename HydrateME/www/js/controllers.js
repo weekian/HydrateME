@@ -1,14 +1,94 @@
 angular.module('app.controllers', [])
 
-.controller('historyCtrl', ['$scope', '$stateParams','ionicDatePicker','$ionicLoading','$http', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('historyCtrl', ['$scope', '$stateParams','ionicDatePicker','$ionicLoading','$http','$timeout', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http) {
-    $scope.dateMilli = moment().valueOf()
+function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
+    $ionicLoading.show({
+      template: '<p>Retrieving...</p><ion-spinner icon="bubbles"></ion-spinner>'
+    });
+    $scope.isList = true;
+    $scope.dateMilli = moment().valueOf();
+    $scope.templateGroup = [
+        {time:1, items:[]},
+        {time:2, items:[]},
+        {time:3, items:[]},
+        {time:4, items:[]},
+        {time:5, items:[]},
+        {time:6, items:[]},
+        {time:7, items:[]},
+        {time:8, items:[]},
+        {time:9, items:[]},
+        {time:10, items:[]},
+        {time:11, items:[]},
+        {time:12, items:[]},
+        {time:13, items:[]},
+        {time:14, items:[]},
+        {time:15, items:[]},
+        {time:16, items:[]},
+        {time:17, items:[]},
+        {time:18, items:[]},
+        {time:19, items:[]},
+        {time:20, items:[]},
+        {time:21, items:[]},
+        {time:22, items:[]},
+        {time:23, items:[]}];
+    $scope.groups = [];
+    $scope.total = 0;
     $scope.date = moment().format('Do MMM YYYY').toString();
+    $http({
+        url: 'http://is439-iotoi.rhcloud.com/getRecordsByDate' + '?username=' + localStorage.getItem('nric') + '&date=' + $scope.dateMilli,
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function successCallback(response) {
+        //console.log(JSON.stringify(response.data.result, null, 4));
+        var temp1 = $scope.templateGroup;
+        var t = 0;
+        for (var i = 0; i < response.data.result.length; i++) {
+            var current = response.data.result[i];
+            var hour = moment(current.dateTimeStamp).hour();
+            t += current.amt;
+            for (var j = 0; j <temp1.length; j++) {
+                if (temp1[j].time === hour) {
+                    temp1[j].items.push(current);
+                }
+            }
+        }
+        var temp = [];
+        for (var j = 0; j < temp1.length; j++) {
+            if (temp1[j].items.length > 0) {
+                temp.push(temp1[j]);
+            }
+        }
+        $scope.total = t;
+        $scope.groups = temp;
+        //console.log(JSON.stringify($scope.groups, null, 4));
+        $ionicLoading.hide();
+    },
+    function errorCallback(response) {
+        console.log("Something went wrong");
+        console.log(response);
+        $ionicLoading.hide();
+    });
+
+
+    $scope.toggleGroup = function(group) {
+        if ($scope.isGroupShown(group)) {
+            $scope.shownGroup = null;
+        } else {
+            $scope.shownGroup = group;
+        }
+    };
+    $scope.isGroupShown = function(group) {
+        return $scope.shownGroup === group;
+    };
+
 
     var dpObj = {
         callback: function (val) {  //Mandatory
+            //If current day, need to keep querying else don't need
             var newDate = moment(val).format('Do MMM YYYY').toString();
             if (newDate !== $scope.date) {
                 $scope.date = newDate;
@@ -23,6 +103,7 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http) {
                     }
                 }).then(function successCallback(response) {
                     console.log(JSON.stringify(response.data.result, null, 4));
+                    return response.data;
                 },
                 function errorCallback(response) {
                     console.log("Something went wrong");

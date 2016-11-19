@@ -27,6 +27,26 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
     }
 })
 
+.filter('hour', function(){
+    return function(value) {
+        if (value < 11) {
+            return value + "am to " + (value+1) + "am";
+        } else if (value === 11) {
+            return "11am to 12noon";
+        } else if (value === 12) {
+            return "12noon to 1pm";
+        } else {
+            return value-12 + "pm to " + (value-11) + "pm";
+        }
+    }
+})
+
+.filter('time', function(){
+    return function(value) {
+        return moment(value).format('h:mm a').toString();
+    }
+})
+
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
