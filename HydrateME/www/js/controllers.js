@@ -5,13 +5,13 @@ angular.module('app.controllers', [])
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams) {
     $scope.date = moment().format('Do MMM YYYY').toString();
-    
+
 }])
 
-.controller('todayCtrl', ['$scope', '$stateParams','$timeout','$q','$http', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('todayCtrl', ['$scope', '$stateParams','$timeout','$q','$http','$ionicPopup','$rootScope', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams,$timeout,$q,$http) {
+function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
     var levels = [
             {'background':'-webkit-linear-gradient(white 100%, #9DC3E6 0%)'},
             {'background':'-webkit-linear-gradient(white 99%, #9DC3E6 0%)'},
@@ -122,6 +122,7 @@ function ($scope, $stateParams,$timeout,$q,$http) {
     } else {
         $scope.userRef = localStorage.getItem('name');
     }
+    $scope.lastTopped = 0;
     $scope.recommendedAmt = parseInt(localStorage.getItem('recommendedAmt'));
     $scope.latestAmt = parseInt(localStorage.getItem('latestAmt'));
     $scope.dateHeader = moment().format('Do MMM YYYY').toString();
@@ -140,24 +141,29 @@ function ($scope, $stateParams,$timeout,$q,$http) {
         if ($scope.lastAmt !== null) {
             var lastDateTimeStamp = moment($scope.lastAmt.dateTimeStamp);
             var today = moment();
-            //console.log("day |" + lastDateTimeStamp.date() + " | " + today.date());
             if (lastDateTimeStamp.month() !== today.month() || lastDateTimeStamp.year() !== today.year()) {
-                //console.log("inside diff month");
-                $scope.period = "on " + lastDateTimeStamp.format('Do MMM YYYY').toString() + " at " + lastDateTimeStamp.format('h:mm:ss a').toString();
+                $rootScope.notify = true;
+                $scope.period = "on " + lastDateTimeStamp.format('Do MMM YYYY').toString() + " at " + lastDateTimeStamp.format('h:mm a').toString();
             } else if (lastDateTimeStamp.date() !== today.date()){
-                //console.log("inside same month");
-                $scope.period= (today.date() - lastDateTimeStamp.date()) + " days ago at " + lastDateTimeStamp.format('h:mm:ss a').toString();
+                $rootScope.notify = true;
+                $scope.period= (today.date() - lastDateTimeStamp.date()) + " days ago at " + lastDateTimeStamp.format('h:mm a').toString();
             } else if (((today.hour() - lastDateTimeStamp.hour()) === 1) && (60-lastDateTimeStamp.minute()+today.minute()) < 60) {
-                //console.log("less than 60min ago");
                 $scope.period = (60-lastDateTimeStamp.minute()+today.minute()) + " minutes ago";
+                $rootScope.notify = false;
             } else if (lastDateTimeStamp.hour() !== today.hour()){
-                //console.log("inside different hour");
+                var diff = today.hour() - lastDateTimeStamp.hour();
+                if (diff >= 2) {
+                    $rootScope.notify = true;
+                } else {
+                    $rootScope.notify = false;
+                }
                 $scope.period= today.hour() - lastDateTimeStamp.hour() + " hours ago";
             } else if (lastDateTimeStamp.minute() !== today.minute()){
-                //console.log("inside 3");
                 $scope.period= today.minute() - lastDateTimeStamp.minute() + " minutes ago";
+                $rootScope.notify = false;
             } else {
                 $scope.period= "just moments ago";
+                $rootScope.notify = false;
             }
         }
     }
@@ -197,14 +203,10 @@ function ($scope, $stateParams,$timeout,$q,$http) {
     }
     var RetrieveLatestWater = function(){
         $http({
-            url: 'https://iot-2016is439.rhcloud.com/api/user/account/getLatest',
+            url: 'URL HERE' + '?nric=' + localStorage.getItem('nric') + '&from=' + localStorage.getItem('lastUpdate'),
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            data: {
-                token:localStorage.getItem('token'),
-                from:localStorage.getItem('lastUpdate')
             }
         }).then(function successCallback(response) {
             //response.data.<param>
@@ -225,16 +227,32 @@ function ($scope, $stateParams,$timeout,$q,$http) {
     }
 }])
 
-.controller('profileCtrl', ['$scope', '$stateParams', '$state','$ionicLoading','$timeout','$ionicHistory','$http',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('profileCtrl', ['$scope', '$stateParams', '$state','$ionicLoading','$timeout','$ionicHistory','$http','$rootScope','$ionicPopup','popup',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $state,$ionicLoading,$timeout,$ionicHistory,$http) {
+function ($scope, $stateParams, $state,$ionicLoading,$timeout,$ionicHistory,$http,$rootScope,$ionicPopup,popup) {
     $scope.usertype = localStorage.getItem('usertype');
     $scope.isParent = ($scope.usertype === 'parent');
     $scope.defaultVolume = parseInt(localStorage.getItem('defaultVolume'));
+    $rootScope.displayNotification = false;
+    if ($scope.isParent) {
+        $scope.buttonStyle = {
+                'height': '120px'
+        }
+    }
     $scope.updateVolune = function(){
         //Not required for purpose of POC
     }
+    $scope.toggleNotification = function() {
+        $rootScope.displayNotification = !$rootScope.displayNotification;
+        var p = popup.alertPopup('Notice',"Notifications have been set to " + $rootScope.displayNotification);
+        p.then(function(res){
+            if ($rootScope.displayNotification) {
+                popup.init();
+            }
+        })
+    }
+
     //Implement field for parents to specify default value
     $scope.logout = function(){
         $ionicLoading.show({
@@ -251,15 +269,14 @@ function ($scope, $stateParams, $state,$ionicLoading,$timeout,$ionicHistory,$htt
                 $ionicHistory.clearHistory();
             },300)
         }, 1000);
-
     }
 
 }])
 
-.controller('hydrateMECtrl', ['$scope', '$stateParams', '$ionicModal', '$ionicPopup', '$http', '$state','$ionicLoading', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('hydrateMECtrl', ['$scope', '$stateParams', '$ionicModal', '$ionicPopup', '$http', '$state','$ionicLoading', 'popup', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoading) {
+function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoading,popup) {
     //Existing users who closed the app but remain logged in
     /*if (localStorage.getItem('login_status')) {
         $state.go('tabsController.today');
@@ -315,62 +332,45 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoadi
               template: '<p>Logging In...</p><ion-spinner icon="bubbles"></ion-spinner>'
             });
             $http({
-                url: 'https://iot-2016is439.rhcloud.com/api/user/account/login',
-                method: 'POST',
+                url: 'http://is439-iotoi.rhcloud.com/api/user/account/login' + '?username=' + login.nric + '&password=' + login.password + '&type=mobile',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                data: {
-                    username:login.nric,
-                    password:login.password,
-                    type:"mobile"
                 }
             }).then(function successCallback(response) {
-                localStorage.setItem("login_status", "true");
-                localStorage.setItem("usertype",response.data.usertype);
-                localStorage.setItem("name", response.data.name);
-                localStorage.setItem("token", response.data.token);
-                localStorage.setItem("recommendedAmt", response.data.recommendedAmt || 1750);
-                localStorage.setItem("latestAmt", response.data.latestAmt || 1577);
-                localStorage.setItem("lastAmt", JSON.stringify(response.data.lastAmt/*) || null);*/ || {dateTimeStamp:1479369600000, amt:400}));
-                localStorage.setItem("defaultVolume", response.data.defaultVolume || 0);
-                localStorage.setItem("lastUpdate", moment().valueOf());
-                $scope.loginModal.hide();
-                $scope.login.nric = "";
-                $scope.login.password = "";
-                $ionicLoading.hide();
-                $state.go('tabsController.today');
+                console.log(response.data);
+                if (response.data.status === 'success') {
+                    localStorage.setItem("login_status", "true");
+                    localStorage.setItem("usertype",response.data.usertype);
+                    localStorage.setItem("name", response.data.name);
+                    localStorage.setItem("nric", response.data.nric);
+                    localStorage.setItem("recommendedAmt", response.data.recommendedAmt);
+                    localStorage.setItem("latestAmt", response.data.latestAmt);
+                    localStorage.setItem("lastAmt", JSON.stringify(response.data.lastAmt) || null);
+                    localStorage.setItem("defaultVolume", response.data.defaultVolume || 0);
+                    localStorage.setItem("lastUpdate", moment().valueOf());
+                    $scope.loginModal.hide();
+                    $scope.login.nric = "";
+                    $scope.login.password = "";
+                    $ionicLoading.hide();
+                    $state.go('tabsController.today');
+                } else {
+                    $ionicLoading.hide();
+                    popup.alertPopup("Oops",response.data.message);
+                }
             },
             function errorCallback(response) {
-                $ionicLoading.hide();
-                alertPopup(response.data.message);
             });
         } else {
             if ((!login.nric && !login.password) || (login.nric.trim().length === 0 && login.password.length ===0)) {
-                alertPopup("Please fill in NRIC and Password");
+                popup.alertPopup("Oops","Please fill in NRIC and Password");
                 $scope.login.nric = "";
             } else if (!login.nric || login.nric.trim().length ===0) {
-                alertPopup("Please fill in NRIC");
+                popup.alertPopup("Oops","Please fill in NRIC");
                 $scope.login.nric = "";
             } else if (!login.password || login.password ) {
-                alertPopup("Please fill in Password");
+                popup.alertPopup("Oops","Please fill in Password");
             }
         }
     }
-    var alertPopup = function(msg) {
-        $ionicPopup.alert({
-            title:"Oops",
-            template:msg
-        });
-    };
-
-    // Execute action on hide modal
-    /*$scope.$on('modal.hidden', function() {
-    // Execute action
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function() {
-    // Execute action
-    });*/
-
 }])
