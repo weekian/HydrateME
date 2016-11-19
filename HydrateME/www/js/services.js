@@ -4,7 +4,7 @@ angular.module('app.services', [])
 
 }])
 
-.service('popup', ['$rootScope', '$ionicPopup', '$timeout','$ionicPlatform',function($rootScope, $ionicPopup,$timeout,$cordovaLocalNotification,$ionicPlatform){
+.service('popup', ['$rootScope', '$ionicPopup', '$timeout','$cordovaLocalNotification','$ionicPlatform',function($rootScope, $ionicPopup,$timeout,$cordovaLocalNotification,$ionicPlatform){
     var functions = {
         alertPopup:function(title, msg) {
             return $ionicPopup.alert({
@@ -23,17 +23,21 @@ angular.module('app.services', [])
             });
         },
         init : function() {
-            $ionicPlatform.ready(function() {
-                var now = new Date();
+            $ionicPlatform.ready(function () {
+                var now = new Date().getTime();
+                var now5Secs = new Date(now + 20000);
                 $cordovaLocalNotification.schedule({
                     id: 1,
-                    date:now.setSeconds(now.getSeconds()+15),
+                    date:now5Secs,
                     title: 'Hmm...',
-                    text: 'It seems that you have not topped up your bottle in the last 2 hours. Have you been hydrating yourself?'
+                    text: 'Have you been hydrating yourself?'
                 }).then(function (result) {
                     console.log("The notification has been set");
                 })
-            });
+            })
+            $rootScope.$on('$cordovaLocalNotification:click', function(event, notification, state) {
+                functions.alertPopup('Hmm...', 'It seems that you have not topped up your bottle in the last 2 hours. Have you been hydrating yourself?');
+            })
             $timeout(function(){
                 var p = functions.alertPopup('Hmm...', 'It seems that you have not topped up your bottle in the last 2 hours. Have you been hydrating yourself?');
                 functions.repeat(p);
