@@ -102,12 +102,34 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                         'Content-Type': 'application/json'
                     }
                 }).then(function successCallback(response) {
-                    console.log(JSON.stringify(response.data.result, null, 4));
-                    return response.data;
+                    console.log(JSON.stringify(response.data.result, null, 2));
+                    var temp1 = $scope.templateGroup;
+                    var t = 0;
+                    for (var i = 0; i < response.data.result.length; i++) {
+                        var current = response.data.result[i];
+                        var hour = moment(current.dateTimeStamp).hour();
+                        t += current.amt;
+                        for (var j = 0; j <temp1.length; j++) {
+                            if (temp1[j].time === hour) {
+                                temp1[j].items.push(current);
+                            }
+                        }
+                    }
+                    var temp = [];
+                    /*for (var j = 0; j < temp1.length; j++) {
+                        if (temp1[j].items.length > 0) {
+                            temp.push(temp1[j]);
+                        }
+                    }*/
+                    $scope.total = t;
+                    $scope.groups = temp;
+                    //console.log(JSON.stringify($scope.groups, null, 4));
+                    $ionicLoading.hide();
                 },
                 function errorCallback(response) {
                     console.log("Something went wrong");
                     console.log(response);
+                    $ionicLoading.hide();
                 });
                 $ionicLoading.hide();
             }
@@ -289,10 +311,12 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
         }, 60000)
     }
     var recursiveWaterUpdate = function() {
-        $timeout(function(){
-            RetrieveLatestWater();
-            recursiveWaterUpdate();
-        },5000)
+        if (localStorage.getItem("login_status")){
+            $timeout(function(){
+                retrieveLatestWater();
+                recursiveWaterUpdate();
+            },5000)
+        }
     }
 
     //Animation for filling
@@ -316,7 +340,7 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
         current = 0;
         fill();
     }
-    var RetrieveLatestWater = function(){
+    var retrieveLatestWater = function(){
         $http({
             url: 'http://is439-iotoi.rhcloud.com/getLatest' + '?username=' + localStorage.getItem('nric') + '&from=' + localStorage.getItem('lastUpdate'),
             method: 'GET',
