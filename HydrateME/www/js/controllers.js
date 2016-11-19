@@ -1,10 +1,43 @@
 angular.module('app.controllers', [])
 
-.controller('historyCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('historyCtrl', ['$scope', '$stateParams','ionicDatePicker','$ionicLoading','$http', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http) {
+    $scope.dateMilli = moment().valueOf()
     $scope.date = moment().format('Do MMM YYYY').toString();
+
+    var dpObj = {
+        callback: function (val) {  //Mandatory
+            var newDate = moment(val).format('Do MMM YYYY').toString();
+            if (newDate !== $scope.date) {
+                $scope.date = newDate;
+                $ionicLoading.show({
+                  template: '<p>Retrieving...</p><ion-spinner icon="bubbles"></ion-spinner>'
+                });
+                $http({
+                    url: 'http://is439-iotoi.rhcloud.com/getRecordsByDate' + '?username=' + localStorage.getItem('nric') + '&date=' + val,
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function successCallback(response) {
+                    console.log(JSON.stringify(response.data.result, null, 4));
+                },
+                function errorCallback(response) {
+                    console.log("Something went wrong");
+                    console.log(response);
+                });
+                $ionicLoading.hide();
+            }
+        },
+        closeOnSelect:true,
+        showTodayButton:true
+    }
+
+    $scope.openDatePicker = function() {
+        ionicDatePicker.openDatePicker(dpObj);
+    }
 
 }])
 
@@ -205,7 +238,7 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
     var RetrieveLatestWater = function(){
         $http({
             url: 'http://is439-iotoi.rhcloud.com/getLatest' + '?username=' + localStorage.getItem('nric') + '&from=' + localStorage.getItem('lastUpdate'),
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }

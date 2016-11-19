@@ -4,7 +4,7 @@ angular.module('app.services', [])
 
 }])
 
-.service('popup', ['$rootScope', '$ionicPopup', '$timeout',function($rootScope, $ionicPopup,$timeout,$cordovaLocalNotification){
+.service('popup', ['$rootScope', '$ionicPopup', '$timeout','$ionicPlatform',function($rootScope, $ionicPopup,$timeout,$cordovaLocalNotification,$ionicPlatform){
     var functions = {
         alertPopup:function(title, msg) {
             return $ionicPopup.alert({
