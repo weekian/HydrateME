@@ -4,7 +4,7 @@ angular.module('app.services', [])
 
 }])
 
-.service('popup', ['$rootScope', '$ionicPopup', '$timeout',function($rootScope, $ionicPopup,$timeout){
+.service('popup', ['$rootScope', '$ionicPopup', '$timeout',function($rootScope, $ionicPopup,$timeout,$cordovaLocalNotification){
     var functions = {
         alertPopup:function(title, msg) {
             return $ionicPopup.alert({
@@ -23,6 +23,17 @@ angular.module('app.services', [])
             });
         },
         init : function() {
+            $ionicPlatform.ready(function() {
+                var now = new Date();
+                $cordovaLocalNotification.schedule({
+                    id: 1,
+                    date:now.setSeconds(now.getSeconds()+15),
+                    title: 'Hmm...',
+                    text: 'It seems that you have not topped up your bottle in the last 2 hours. Have you been hydrating yourself?'
+                }).then(function (result) {
+                    console.log("The notification has been set");
+                })
+            });
             $timeout(function(){
                 var p = functions.alertPopup('Hmm...', 'It seems that you have not topped up your bottle in the last 2 hours. Have you been hydrating yourself?');
                 functions.repeat(p);

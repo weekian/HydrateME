@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives','app.services','angularMoment'])
+angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives','app.services','angularMoment', 'ngCordova'])
 
 .config(function($ionicConfigProvider){
     $ionicConfigProvider.backButton.text('').previousTitleText(false);
@@ -31,6 +31,12 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+
+    //For ios 8
+    if(device.platform === "iOS") {
+        window.plugin.notification.local.promptForPermission();
+    }
+
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
