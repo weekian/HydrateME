@@ -194,6 +194,7 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
         })
     }
     //Run the timeout 1.5seconds after logging in
+    recursiveWaterUpdate();
     $timeout(fill(), 1500);
     calculatePeriod();
     recursivePeriodCalculation();
@@ -203,21 +204,21 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
     }
     var RetrieveLatestWater = function(){
         $http({
-            url: 'URL HERE' + '?nric=' + localStorage.getItem('nric') + '&from=' + localStorage.getItem('lastUpdate'),
+            url: 'http://is439-iotoi.rhcloud.com/getLatest' + '?username=' + localStorage.getItem('nric') + '&from=' + localStorage.getItem('lastUpdate'),
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             }
         }).then(function successCallback(response) {
-            //response.data.<param>
             localStorage.setItem("lastUpdate", moment().valueOf());
-            $scope.latestAmt = response.data.latestAmt;
-            fill();
-            localStorage.setItem('latestAmt', response.data.latestAmt);
-            var lastAmtR = response.data.lastAmt;
-            if ((lastAmtR !== null) && (lastAmtR.dateTimeStamp !== $scope.lastAmt.dateTimeStamp)) {
-                $scope.lastAmt = lastAmtR;
-                localStorage.setItem('lastAmt', lastAmtR);
+            if ($scope.latestAmt !== response.data.latestAmt) {
+                $scope.latestAmt = response.data.latestAmt;
+                fill();
+                localStorage.setItem('latestAmt', $scope.latestAmt);
+            }
+            if (response.data.lastAmt.amt !== 0 || response.data.lastAmt.dateTimeStamp !== $scope.lastAmt.dateTimeStamp) {
+                localStorage.setItem('lastAmt', JSON.stringify(response.data.lastAmt));
+                $scope.lastAmt = response.data.lastAmt;
             }
         },
         function errorCallback(response) {
@@ -338,7 +339,6 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoadi
                     'Content-Type': 'application/json'
                 }
             }).then(function successCallback(response) {
-                console.log(response.data);
                 if (response.data.status === 'success') {
                     localStorage.setItem("login_status", "true");
                     localStorage.setItem("usertype",response.data.usertype);
@@ -356,7 +356,7 @@ function ($scope, $stateParams, $ionicModal,$ionicPopup,$http,$state,$ionicLoadi
                     $state.go('tabsController.today');
                 } else {
                     $ionicLoading.hide();
-                    popup.alertPopup("Oops",response.data.message);
+                    popup.alertPopup("Oops",response.data.status);
                 }
             },
             function errorCallback(response) {

@@ -33,9 +33,9 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
     // for form inputs)
 
     //For ios 8
-    if(device.platform === "iOS") {
-        window.plugin.notification.local.promptForPermission();
-    }
+    //if(device.platform === "iOS") {
+    //    window.plugin.notification.local.promptForPermission();
+    //}
 
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);

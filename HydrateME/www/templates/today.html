@@ -12,13 +12,9 @@
         <img class="circleBorderImage" src="img/todayDroplet.png">
         <p class="identifier">{{userRef}} filled</p>
         <p>{{latestAmt | litre}}<p>
-        <!--<strong>{{litresDrank}}</strong> liters-
-            <div class="circleBorderTop"></div>
-            Hello
-            <div class="circleBorderBottom"></div>-->
     </div>
     <div class="todayBottom">
-        <span ng-hide="lastAmt === null">Last topped up {{lastAmt.amt | litre}} {{period}}<span>
+        <span ng-hide="lastAmt.amt === 0">Last topped up {{lastAmt.amt | litre}} {{period}}<span>
     <div>
     </ion-content>
 </ion-view>
