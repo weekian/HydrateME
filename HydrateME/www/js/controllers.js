@@ -10,6 +10,9 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
     $scope.isList = false;
     $scope.dateMilli = moment().valueOf();
     $scope.groups = [];
+    $scope.labels = [];
+    $scope.series = ['Volume'];
+    $scope.data = [[]];
     $scope.total = 0;
     $scope.todayDate = moment().format('Do MMM YYYY').toString();
     $scope.date = moment().format('Do MMM YYYY').toString();
@@ -72,23 +75,35 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
         }
         $scope.total = t;
         $scope.groups = temp;
-        //console.log(JSON.stringify($scope.groups, null, 4));
-        $ionicLoading.hide();
     },
     function errorCallback(response) {
         console.log("Something went wrong");
         //console.log(response);
+    });
+    $http({
+        url:'http://is439-iotoi.rhcloud.com/getStudentAverage?username=' + localStorage.getItem('nric') + '&date=' + $scope.dateMilli,
+        method:'GET',
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }).then(function successCallback(response) {
+        console.log("inside");
+        console.log(JSON.stringify(response.data.result, null, 4));
+        for (var i = response.data.result.length-1; i >= 0;i--) {
+            console.log(response.data.result[i].dateString);
+            $scope.labels.push(moment(response.data.result[i].dateString).format('Do MMM').toString());
+            $scope.data[0].push(response.data.result[i].avg);
+        }
+        $ionicLoading.hide();
+    },
+    function errorCallback(response) {
+        console.log("Something went wrong");
         $ionicLoading.hide();
     });
     var refreshTodayAnalysis = function() {
-        console.log("Starting");
-        console.log($scope.date);
-        console.log($scope.todayDate);
         if ($scope.date !== $scope.todayDate) {
-            console.log("Not today");
 
         } else {
-            console.log("Running today refresh");
             $http({
                 url: 'http://is439-iotoi.rhcloud.com/getRecordsByDate' + '?username=' + localStorage.getItem('nric') + '&date=' + $scope.dateMilli,
                 method: 'GET',
@@ -115,7 +130,6 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                     }
                 }
                 if (hasMissing) {
-                    console.log("has missing");
                     var temp1 =[
                         {time:0, items:[]},
                         {time:1, items:[]},
@@ -166,11 +180,29 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                 console.log("Something went wrong");
                 //console.log(response);
             });
+            $http({
+                url:'http://is439-iotoi.rhcloud.com/getStudentAverage?username=' + localStorage.getItem('nric') + '&date=' + $scope.dateMilli,
+                method:'GET',
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            }).then(function successCallback(response) {
+                console.log("inside");
+                console.log(JSON.stringify(response.data.result, null, 4));
+                var x = [];
+                for (var i = response.data.result.length-1; i >= 0;i--) {
+                    console.log(response.data.result[i].dateString);
+                    x.push(response.data.result[i].avg);
+                }
+                $scope.data[0] = x;
+            },
+            function errorCallback(response) {
+                console.log("Something went wrong");
+            });
         }
     }
 
     var recursiveWaterUpdateTimeout = function() {
-        console.log("Started");
         if (localStorage.getItem("login_status")) {
             $timeout(function(){
                 refreshTodayAnalysis();
@@ -255,31 +287,45 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                     }
                     $scope.total = t;
                     $scope.groups = temp;
-                    //console.log(JSON.stringify($scope.groups, null, 4));
-                    $ionicLoading.hide();
+                    console.log("Success");
                 },
                 function errorCallback(response) {
                     console.log("Something went wrong");
                     //console.log(response);
-                    $ionicLoading.hide();
+                });
+                $http({
+                    url:'http://is439-iotoi.rhcloud.com/getStudentAverage?username=' + localStorage.getItem('nric') + '&date=' + val,
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }).then(function successCallback(response) {
+                    console.log("inside");
+                    console.log(JSON.stringify(response.data.result, null, 4));
+                    var x = [];
+                    var y = [];
+                    for (var i = response.data.result.length-1; i >= 0;i--) {
+                        console.log(response.data.result[i].dateString);
+                        y.push(moment(response.data.result[i].dateString).format('Do MMM').toString());
+                        x.push(response.data.result[i].avg);
+                    }
+                    $scope.data[0] = x;
+                    $scope.labels = y;
+                    console.log("SuccessES");
+                },
+                function errorCallback(response) {
+                    console.log("Something went wrong");
                 });
                 $ionicLoading.hide();
             }
         },
-        closeOnSelect:true,
+        closeOnSelect:false,
         showTodayButton:true
     }
 
     $scope.openDatePicker = function() {
         ionicDatePicker.openDatePicker(dpObj);
     }
-
-    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
- $scope.series = ['Series A', 'Series B'];
- $scope.data = [
-   [65, 59, 80, 81, 56, 55, 40],
-   [28, 48, 40, 19, 86, 27, 90]
- ];
 
 }])
 
@@ -442,19 +488,12 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
             }
         }
     }
-    var recursivePeriodCalculation = function() {
-        if (localStorage.getItem("login_status")){
-            $timeout(function(){
-                //console.log("Running last topped up at" + moment().toString());
-                calculatePeriod();
-                recursivePeriodCalculation();
-            }, 60000)
-        }
-    }
+
     var recursiveWaterUpdate = function() {
         if (localStorage.getItem("login_status")){
             $timeout(function(){
                 retrieveLatestWater();
+                calculatePeriod();
                 recursiveWaterUpdate();
             },5000)
         }
@@ -476,7 +515,6 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
     recursiveWaterUpdate();
     $timeout(fill(), 1500);
     calculatePeriod();
-    recursivePeriodCalculation();
     $scope.refill = function() {
         current = 0;
         fill();
