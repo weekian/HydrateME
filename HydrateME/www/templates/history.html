@@ -1,14 +1,29 @@
 <ion-view title="Analysis" id="page2">
     <ion-header-bar align-title="Center" class="bar-subheader bar-energized">
-        <button class="button button-full button-energized" style="margin-top:0px; margin-bottom:0px;font-size:1.5em;" ng-click="openDatePicker()">
-          {{date}}
+        <div class="button-bar">
+            <a class="button" style="padding:0px;" ng-click="toggle(2)">
+            5 Day Avg</a>
+        <button class="button button-energized" style="padding:0px;margin-top:0px; margin-bottom:0px;font-size:1em;text-align:center;" ng-click="openDatePicker()">
+        {{date}}
         </button>
+        <a class="button" style="padding:0px;" ng-click="toggle(1)">Day's Record</a>
+        </div>
     </ion-header-bar>
-    <ion-content padding="false" class="has-header has-subheader" scroll="true">
 
-        <ion-list>
+    <ion-content padding="false" class="has-header has-subheader" >
+        <div class="card" ng-show="!isList">
+            <div class="item item-divider" style="text-align:center">
+                Average for past 5 days
+            </div>
+            <div class="item item-text-wrap">
+                <canvas id="line" class="chart chart-line" chart-data="data"
+                chart-labels="labels" chart-series="series">
+            </canvas>
+            </div>
+        </div>
+        <ion-list ng-show="isList">
             <ion-item class="item-stable">
-                <span style="font-size:1.2em;font-weight:bold;">Total {{total | litre}}<span>
+                <span style="font-size:1.1em;font-weight:bold;">{{date}} | Total: {{total | litre}}<span>
             </ion-item>
             <div ng-repeat="group in groups">
             <ion-item class="item-stable"

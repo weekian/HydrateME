@@ -7,12 +7,19 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
     $ionicLoading.show({
       template: '<p>Retrieving...</p><ion-spinner icon="bubbles"></ion-spinner>'
     });
-    $scope.isList = true;
+    $scope.isList = false;
     $scope.dateMilli = moment().valueOf();
     $scope.groups = [];
     $scope.total = 0;
     $scope.todayDate = moment().format('Do MMM YYYY').toString();
     $scope.date = moment().format('Do MMM YYYY').toString();
+    $scope.toggle = function(n) {
+        if (n===1) {
+            $scope.isList = true;
+        } else {
+            $scope.isList = false;
+        }
+    }
     $http({
         url: 'http://is439-iotoi.rhcloud.com/getRecordsByDate' + '?username=' + localStorage.getItem('nric') + '&date=' + $scope.dateMilli,
         method: 'GET',
@@ -90,24 +97,21 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                 }
             }).then(function successCallback(response) {
                 //Check whether it is still the same total and whether got those that are not inside
-                var items = [];
-                var missingItems = [];
                 var hasMissing = false;
-                for (var i = 0; i < $scope.groups.length; i++) {
-                    for (var j = 0; j < $scope.groups[i].items; j++) {
-                        items.push($scope.groups[i].items[j]);
-                    }
-                }
-                for (var i = 0; i < response.data.result; i++) {
-                    var hasSpecific = false;
-                    for (var j = 0; j < items.length; j++) {
-                        if (response.data.result[i].dateString  === items[j].dateString && response.data.result[i].amt === items[j].amt) {
-                            hasSpecific = true;
+                for (var i = 0; i < response.data.result.length;i++) {
+                    var rCurrent = response.data.result[i];
+                    var hasCurrent = false;
+                    for (var j = 0; j < $scope.groups.length; j++) {
+                        for (var k = 0; k < $scope.groups[j].items.length;k++) {
+                            var gCurrent = $scope.groups[j].items[k];
+                            if (rCurrent.dateString === gCurrent.dateString && rCurrent.amt === gCurrent.amt) {
+                                hasCurrent = true;
+                            }
                         }
                     }
-                    if (!hasSpecific) {
+                    if (!hasCurrent) {
                         hasMissing = true;
-                        //missingItems.push(response.data.result[i]);
+                        break;
                     }
                 }
                 if (hasMissing) {
@@ -167,10 +171,12 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
 
     var recursiveWaterUpdateTimeout = function() {
         console.log("Started");
-        $timeout(function(){
-            refreshTodayAnalysis();
-            recursiveWaterUpdateTimeout();
-        }, 3000);
+        if (localStorage.getItem("login_status")) {
+            $timeout(function(){
+                refreshTodayAnalysis();
+                recursiveWaterUpdateTimeout();
+            }, 3000);
+        }
     }
 
 
@@ -267,6 +273,13 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
     $scope.openDatePicker = function() {
         ionicDatePicker.openDatePicker(dpObj);
     }
+
+    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+ $scope.series = ['Series A', 'Series B'];
+ $scope.data = [
+   [65, 59, 80, 81, 56, 55, 40],
+   [28, 48, 40, 19, 86, 27, 90]
+ ];
 
 }])
 
@@ -430,11 +443,13 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
         }
     }
     var recursivePeriodCalculation = function() {
-        $timeout(function(){
-            //console.log("Running last topped up at" + moment().toString());
-            calculatePeriod();
-            recursivePeriodCalculation();
-        }, 60000)
+        if (localStorage.getItem("login_status")){
+            $timeout(function(){
+                //console.log("Running last topped up at" + moment().toString());
+                calculatePeriod();
+                recursivePeriodCalculation();
+            }, 60000)
+        }
     }
     var recursiveWaterUpdate = function() {
         if (localStorage.getItem("login_status")){
