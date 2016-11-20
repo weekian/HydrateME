@@ -22,8 +22,7 @@
             <ion-item class="item-accordion"
                    ng-repeat="item in group.items"
                    ng-show="isGroupShown(group)" style="text-align:center">
-                <span style="float:left">&nbsp;Time: {{item.dateTimeStamp | time}}<span>
-                <span style="float:right">&nbsp;&nbsp;|&nbsp;&nbsp;Volume {{item.amt | litre}}</span>
+                <span style="float:left">&nbsp;Time: {{item.dateTimeStamp | time}} &nbsp;&nbsp;|&nbsp;&nbsp;Volume {{item.amt | litre}}<span>
             </ion-item>
             </div>
         </ion-list>

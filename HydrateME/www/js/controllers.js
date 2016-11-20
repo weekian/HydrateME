@@ -9,32 +9,9 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
     });
     $scope.isList = true;
     $scope.dateMilli = moment().valueOf();
-    $scope.templateGroup = [
-        {time:1, items:[]},
-        {time:2, items:[]},
-        {time:3, items:[]},
-        {time:4, items:[]},
-        {time:5, items:[]},
-        {time:6, items:[]},
-        {time:7, items:[]},
-        {time:8, items:[]},
-        {time:9, items:[]},
-        {time:10, items:[]},
-        {time:11, items:[]},
-        {time:12, items:[]},
-        {time:13, items:[]},
-        {time:14, items:[]},
-        {time:15, items:[]},
-        {time:16, items:[]},
-        {time:17, items:[]},
-        {time:18, items:[]},
-        {time:19, items:[]},
-        {time:20, items:[]},
-        {time:21, items:[]},
-        {time:22, items:[]},
-        {time:23, items:[]}];
     $scope.groups = [];
     $scope.total = 0;
+    $scope.todayDate = moment().format('Do MMM YYYY').toString();
     $scope.date = moment().format('Do MMM YYYY').toString();
     $http({
         url: 'http://is439-iotoi.rhcloud.com/getRecordsByDate' + '?username=' + localStorage.getItem('nric') + '&date=' + $scope.dateMilli,
@@ -44,7 +21,31 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
         }
     }).then(function successCallback(response) {
         //console.log(JSON.stringify(response.data.result, null, 4));
-        var temp1 = $scope.templateGroup;
+        var temp1 =[
+            {time:0, items:[]},
+            {time:1, items:[]},
+            {time:2, items:[]},
+            {time:3, items:[]},
+            {time:4, items:[]},
+            {time:5, items:[]},
+            {time:6, items:[]},
+            {time:7, items:[]},
+            {time:8, items:[]},
+            {time:9, items:[]},
+            {time:10, items:[]},
+            {time:11, items:[]},
+            {time:12, items:[]},
+            {time:13, items:[]},
+            {time:14, items:[]},
+            {time:15, items:[]},
+            {time:16, items:[]},
+            {time:17, items:[]},
+            {time:18, items:[]},
+            {time:19, items:[]},
+            {time:20, items:[]},
+            {time:21, items:[]},
+            {time:22, items:[]},
+            {time:23, items:[]}];
         var t = 0;
         for (var i = 0; i < response.data.result.length; i++) {
             var current = response.data.result[i];
@@ -69,9 +70,108 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
     },
     function errorCallback(response) {
         console.log("Something went wrong");
-        console.log(response);
+        //console.log(response);
         $ionicLoading.hide();
     });
+    var refreshTodayAnalysis = function() {
+        console.log("Starting");
+        console.log($scope.date);
+        console.log($scope.todayDate);
+        if ($scope.date !== $scope.todayDate) {
+            console.log("Not today");
+
+        } else {
+            console.log("Running today refresh");
+            $http({
+                url: 'http://is439-iotoi.rhcloud.com/getRecordsByDate' + '?username=' + localStorage.getItem('nric') + '&date=' + $scope.dateMilli,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function successCallback(response) {
+                //Check whether it is still the same total and whether got those that are not inside
+                var items = [];
+                var missingItems = [];
+                var hasMissing = false;
+                for (var i = 0; i < $scope.groups.length; i++) {
+                    for (var j = 0; j < $scope.groups[i].items; j++) {
+                        items.push($scope.groups[i].items[j]);
+                    }
+                }
+                for (var i = 0; i < response.data.result; i++) {
+                    var hasSpecific = false;
+                    for (var j = 0; j < items.length; j++) {
+                        if (response.data.result[i].dateTimeStamp  === items[j].dateTimeStamp && response.data.result[i].amt === items[j].amt) {
+                            hasSpecific = true;
+                        }
+                    }
+                    if (!hasSpecific) {
+                        hasMissing = true;
+                        //missingItems.push(response.data.result[i]);
+                    }
+                }
+                if (hasMissing) {
+                    console.log("has missing");
+                    var temp1 =[
+                        {time:0, items:[]},
+                        {time:1, items:[]},
+                        {time:2, items:[]},
+                        {time:3, items:[]},
+                        {time:4, items:[]},
+                        {time:5, items:[]},
+                        {time:6, items:[]},
+                        {time:7, items:[]},
+                        {time:8, items:[]},
+                        {time:9, items:[]},
+                        {time:10, items:[]},
+                        {time:11, items:[]},
+                        {time:12, items:[]},
+                        {time:13, items:[]},
+                        {time:14, items:[]},
+                        {time:15, items:[]},
+                        {time:16, items:[]},
+                        {time:17, items:[]},
+                        {time:18, items:[]},
+                        {time:19, items:[]},
+                        {time:20, items:[]},
+                        {time:21, items:[]},
+                        {time:22, items:[]},
+                        {time:23, items:[]}];
+                    var t = 0;
+                    for (var i = 0; i < response.data.result.length; i++) {
+                        var current = response.data.result[i];
+                        var hour = moment(current.dateTimeStamp).hour();
+                        t += current.amt;
+                        for (var j = 0; j <temp1.length; j++) {
+                            if (temp1[j].time === hour) {
+                                temp1[j].items.push(current);
+                            }
+                        }
+                    }
+                    var temp = [];
+                    for (var j = 0; j < temp1.length; j++) {
+                        if (temp1[j].items.length > 0) {
+                            temp.push(temp1[j]);
+                        }
+                    }
+                    $scope.total = t;
+                    $scope.groups = temp;
+                }
+            },
+            function errorCallback(response) {
+                console.log("Something went wrong");
+                //console.log(response);
+            });
+        }
+    }
+
+    var recursiveWaterUpdateTimeout = function() {
+        console.log("Started");
+        $timeout(function(){
+            refreshTodayAnalysis();
+            recursiveWaterUpdateTimeout();
+        }, 3000);
+    }
 
 
     $scope.toggleGroup = function(group) {
@@ -84,6 +184,7 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
     $scope.isGroupShown = function(group) {
         return $scope.shownGroup === group;
     };
+    recursiveWaterUpdateTimeout();
 
 
     var dpObj = {
@@ -102,8 +203,32 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                         'Content-Type': 'application/json'
                     }
                 }).then(function successCallback(response) {
-                    console.log(JSON.stringify(response.data.result, null, 2));
-                    var temp1 = $scope.templateGroup;
+                    //console.log(JSON.stringify(response.data.result, null, 2));
+                    var temp1 = [
+                        {time:0, items:[]},
+                        {time:1, items:[]},
+                        {time:2, items:[]},
+                        {time:3, items:[]},
+                        {time:4, items:[]},
+                        {time:5, items:[]},
+                        {time:6, items:[]},
+                        {time:7, items:[]},
+                        {time:8, items:[]},
+                        {time:9, items:[]},
+                        {time:10, items:[]},
+                        {time:11, items:[]},
+                        {time:12, items:[]},
+                        {time:13, items:[]},
+                        {time:14, items:[]},
+                        {time:15, items:[]},
+                        {time:16, items:[]},
+                        {time:17, items:[]},
+                        {time:18, items:[]},
+                        {time:19, items:[]},
+                        {time:20, items:[]},
+                        {time:21, items:[]},
+                        {time:22, items:[]},
+                        {time:23, items:[]}];
                     var t = 0;
                     for (var i = 0; i < response.data.result.length; i++) {
                         var current = response.data.result[i];
@@ -116,11 +241,12 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                         }
                     }
                     var temp = [];
-                    /*for (var j = 0; j < temp1.length; j++) {
+                    //console.log(JSON.stringify(temp1, null, 2));
+                    for (var j = 0; j < temp1.length; j++) {
                         if (temp1[j].items.length > 0) {
                             temp.push(temp1[j]);
                         }
-                    }*/
+                    }
                     $scope.total = t;
                     $scope.groups = temp;
                     //console.log(JSON.stringify($scope.groups, null, 4));
@@ -128,7 +254,7 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                 },
                 function errorCallback(response) {
                     console.log("Something went wrong");
-                    console.log(response);
+                    //console.log(response);
                     $ionicLoading.hide();
                 });
                 $ionicLoading.hide();
