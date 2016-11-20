@@ -49,7 +49,7 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
         var t = 0;
         for (var i = 0; i < response.data.result.length; i++) {
             var current = response.data.result[i];
-            var hour = moment(current.dateTimeStamp).hour();
+            var hour = moment(current.dateString).hour();
             t += current.amt;
             for (var j = 0; j <temp1.length; j++) {
                 if (temp1[j].time === hour) {
@@ -101,7 +101,7 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                 for (var i = 0; i < response.data.result; i++) {
                     var hasSpecific = false;
                     for (var j = 0; j < items.length; j++) {
-                        if (response.data.result[i].dateTimeStamp  === items[j].dateTimeStamp && response.data.result[i].amt === items[j].amt) {
+                        if (response.data.result[i].dateString  === items[j].dateString && response.data.result[i].amt === items[j].amt) {
                             hasSpecific = true;
                         }
                     }
@@ -140,7 +140,7 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                     var t = 0;
                     for (var i = 0; i < response.data.result.length; i++) {
                         var current = response.data.result[i];
-                        var hour = moment(current.dateTimeStamp).hour();
+                        var hour = moment(current.dateString).hour();
                         t += current.amt;
                         for (var j = 0; j <temp1.length; j++) {
                             if (temp1[j].time === hour) {
@@ -232,7 +232,7 @@ function ($scope, $stateParams,ionicDatePicker,$ionicLoading,$http,$timeout) {
                     var t = 0;
                     for (var i = 0; i < response.data.result.length; i++) {
                         var current = response.data.result[i];
-                        var hour = moment(current.dateTimeStamp).hour();
+                        var hour = moment(current.dateString).hour();
                         t += current.amt;
                         for (var j = 0; j <temp1.length; j++) {
                             if (temp1[j].time === hour) {
@@ -401,7 +401,7 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
     //Calculating the past time
     var calculatePeriod = function(){
         if ($scope.lastAmt !== null) {
-            var lastDateTimeStamp = moment($scope.lastAmt.dateTimeStamp);
+            var lastDateTimeStamp = moment($scope.lastAmt.dateString);
             var today = moment();
             if (lastDateTimeStamp.month() !== today.month() || lastDateTimeStamp.year() !== today.year()) {
                 $rootScope.notify = true;
@@ -480,7 +480,7 @@ function ($scope, $stateParams,$timeout,$q,$http,$ionicPopup,$rootScope) {
                 fill();
                 localStorage.setItem('latestAmt', $scope.latestAmt);
             }
-            if (response.data.lastAmt.amt !== 0 || response.data.lastAmt.dateTimeStamp !== $scope.lastAmt.dateTimeStamp) {
+            if (response.data.lastAmt.amt !== 0 || response.data.lastAmt.dateString !== $scope.lastAmt.dateString) {
                 localStorage.setItem('lastAmt', JSON.stringify(response.data.lastAmt));
                 $scope.lastAmt = response.data.lastAmt;
             }
