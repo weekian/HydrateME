@@ -18,6 +18,10 @@ Report
 
 View report [here](https://www.dropbox.com/s/4xwzr0rje89tgf3/proj3-team5.pdf?dl=0)
 
+Screenshots of application
+------
+![Landing](./images/screenshots.png)
+
 Project Stack
 ------
 Front-end: Mobile Application (developed using [Ionic Framework](https://ionicframework.com/)) and Website (served from [Github Pages](https://pages.github.com/))
